@@ -7,8 +7,8 @@ const result_p = document.querySelector(".result > p")
 const rock_div = document.getElementById("r")
 const paper_div = document.getElementById("p")
 const scissors_div = document.getElementById("s")
-const smallUserWord = "(user)".fontsize(5)
-const smallCPUWord = "(cpu)".fontsize(5)
+const smallUserWord = "(user)".fontsize(4).sub()
+const smallCPUWord = "(cpu)".fontsize(4).sub()
 
 
 function getComputerChoice() {
@@ -27,30 +27,39 @@ const getFullWord = letter => {
 
 function formatResult(winLoss, user, computer) {
     let output
-    if (winLoss === 'You win!') {
+    if (winLoss === 'You won, ') {
         output = `${getFullWord(user)}${smallUserWord} beats ${getFullWord(computer)}${smallCPUWord}`
     } else {
-        output = `${getFullWord(computer)}${smallCPUWord} beats ${getFullWord(user)}${smallUserWord}`
+        output = `${getFullWord(user)}${smallUserWord} loses to ${getFullWord(computer)}${smallCPUWord}`
     }
-    result_p.innerHTML = output + ". " + winLoss
+    result_p.innerHTML = winLoss + output
 }
 
 function win(user, computer) {
+    const userChoice_div = document.getElementById(user)
     userScore++
     userScore_span.innerHTML = userScore
-    formatResult("You win!", user, computer)
+    formatResult("You won, ", user, computer)
+    userChoice_div.classList.add('green_glow')
+    setTimeout(() => userChoice_div.classList.remove('green_glow'), 300)
 }
 
 
 function lose(user, computer) {
+    const userChoice_div = document.getElementById(user)
     computerScore++
     computerScore_span.innerHTML = computerScore
-    formatResult("You lost!", user, computer)
+    formatResult("You lost, ", user, computer)
+    userChoice_div.classList.add('red_glow')
+    setTimeout(() => userChoice_div.classList.remove('red_glow'), 300)
 }
 
 
-function draw() {
+function draw(user) {
+    const userChoice_div = document.getElementById(user)
     result_p.innerHTML = "It's a draw!"
+    userChoice_div.classList.add('grey_glow')
+    setTimeout(() => userChoice_div.classList.remove('grey_glow'), 300)
 }
 
 function game(userChoice) {
@@ -69,7 +78,7 @@ function game(userChoice) {
         case "rr":
         case "pp":
         case "ss":
-            draw()
+            draw(userChoice)
             break
     }
 }
